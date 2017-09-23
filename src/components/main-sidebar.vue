@@ -1,6 +1,6 @@
 <template>
-  <md-sidenav class="md-left md-fixed main-sidebar" md-swipeable ref="sidenav">
-    <md-list class="md-dense links">
+  <md-sidenav class="md-left md-fixed" md-swipeable ref="sidenav">
+    <md-list class="md-dense">
       <md-list-item>
         <router-link exact to="/">root</router-link>
       </md-list-item>
@@ -24,11 +24,11 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '../../node_modules/vue-material/src/core/stylesheets/variables.scss';
   @import '../config.scss';
 
-  .main-sidebar {
+  .md-sidenav /deep/ {
     .md-sidenav-content {
       width: $sizebar-size;
       display: flex;
@@ -42,7 +42,7 @@
         box-shadow: $material-shadow-2dp;
       }
 
-      .links.md-list {
+      .md-list {
         padding: 0;
       }
     }

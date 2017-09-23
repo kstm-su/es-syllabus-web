@@ -23,9 +23,6 @@
 </script>
 
 <style lang="scss">
-  @import '../node_modules/vue-material/src/core/stylesheets/variables.scss';
-  @import './config.scss';
-
   [v-cloak] {
     display: none;
   }
@@ -39,6 +36,11 @@
   body {
     display: flex;
   }
+</style>
+
+<style lang="scss" scoped>
+  @import '../node_modules/vue-material/src/core/stylesheets/variables.scss';
+  @import './config.scss';
 
   .container {
     min-height: 100%;
@@ -52,7 +54,7 @@
     }
   }
 
-  .main-header {
+  .main-content /deep/ .main-header {
     .nav-trigger {
       @media (min-width: 1281px) {
         display: none;
