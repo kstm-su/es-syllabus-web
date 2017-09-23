@@ -4,12 +4,6 @@
       <md-list-item>
         <router-link exact to="/">root</router-link>
       </md-list-item>
-      <md-list-item>
-        <router-link exact to="/foo">foo</router-link>
-      </md-list-item>
-      <md-list-item>
-        <router-link exact to="/bar">bar</router-link>
-      </md-list-item>
     </md-list>
   </md-sidenav>
 </template>

@@ -1,18 +1,8 @@
-import Root from './pages/root';
-import Foo from './pages/foo';
-import Bar from './pages/bar';
+import Search from './pages/search';
 
 export default [
   {
     path: '/',
-    component: Root,
-  },
-  {
-    path: '/foo',
-    component: Foo,
-  },
-  {
-    path: '/bar',
-    component: Bar,
+    component: Search,
   },
 ];
