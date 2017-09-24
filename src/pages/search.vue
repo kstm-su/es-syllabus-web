@@ -87,9 +87,7 @@ export default {
         params: {
           scroll: '1m',
         },
-      }).then(resp => {
-        this.result = resp.data;
-      });
+      }).then(resp => this.result = resp.data);
     },
     scroll(e) {
       axios({
@@ -112,7 +110,11 @@ export default {
     },
   },
   mounted() {
+    this.search();
     window.addEventListener('keydown', e => {
+      if (e.ctrlKey || e.altKey || e.metaKey) {
+        return;
+      }
       if (e.keyCode === 0x8 ||  e.keyCode === 0xa || e.keyCode == 0xd ||  // BS, LF, CR
         (0x30 <= e.keyCode && e.keyCode <= 0x5a) ||  // 0-9, A-Z, a-z
         (0x60 <= e.keyCode && e.keyCode <= 0x6f) ||  // numpad0-9, *+-./
