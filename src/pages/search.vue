@@ -20,34 +20,34 @@
           <md-table-head></md-table-head>
         </md-table-row>
       </md-table-header>
-      <md-table-body v-if="result">
-        <md-table-row v-for="hit in result.hits.hits" :key="hit._source.id">
-          <md-table-cell>{{ hit._source.code }}</md-table-cell>
+      <transition-group name="result" tag="md-table-body">
+        <md-table-row v-for="(row, i) in rows" :key="i">
+          <md-table-cell>{{ row.code }}</md-table-cell>
           <md-table-cell>
-            <div v-if="hit._source.title_ja">{{ hit._source.title_ja }}</div>
-            <div v-if="hit._source.title_en">{{ hit._source.title_en }}</div>
+            <div v-if="row.title_ja">{{ row.title_ja }}</div>
+            <div v-if="row.title_en">{{ row.title_en }}</div>
           </md-table-cell>
           <md-table-cell>
-            <div v-for="teacher in hit._source.teachers">{{ teacher.name }}</div>
+            <div v-for="teacher in row.teachers">{{ teacher.name }}</div>
           </md-table-cell>
-          <md-table-cell>{{ hit._source.semester.description }}</md-table-cell>
+          <md-table-cell>{{ row.semester.description }}</md-table-cell>
           <md-table-cell>
-            <div v-for="schedule in hit._source.schedules">{{ schedule.description }}</div>
+            <div v-for="schedule in row.schedules">{{ schedule.description }}</div>
           </md-table-cell>
-          <md-table-cell>{{ hit._source.department.name }}</md-table-cell>
+          <md-table-cell>{{ row.department.name }}</md-table-cell>
           <md-table-cell>
-            <div v-for="room in hit._source.classrooms">{{ room.name }}</div>
+            <div v-for="room in row.classrooms">{{ room.name }}</div>
           </md-table-cell>
-          <md-table-cell md-numeric>{{ hit._source.credit }}</md-table-cell>
+          <md-table-cell md-numeric>{{ row.credit }}</md-table-cell>
           <md-table-cell>
-            <md-button class="md-icon-button" :href="`https://campus-2.shinshu-u.ac.jp/syllabus/syllabus.dll/Display${hit._source.query}`" target="_blank">
+            <md-button class="md-icon-button" :href="`https://campus-2.shinshu-u.ac.jp/syllabus/syllabus.dll/Display${row.query}`" target="_blank">
               <md-icon>launch</md-icon>
             </md-button>
           </md-table-cell>
         </md-table-row>
-      </md-table-body>
+      </transition-group>
     </md-table>
-    <infinite-loading v-if="result != null && result._scroll_id && result.hits.hits.length < result.hits.total" ref="loading" :distance="200" @infinite="scroll"></infinite-loading>
+    <infinite-loading v-if="remain > 0" ref="loading" :distance="200" @infinite="scroll"></infinite-loading>
   </div>
 </template>
 
@@ -62,13 +62,23 @@ export default {
   data() {
     return {
       query: '',
-      result: null,
+      results: [],
       year: new Date().getFullYear(),
     };
   },
+  computed: {
+    rows() {
+      return [].concat(...this.results.map(r => r.hits.hits.map(v => v._source)));
+    },
+    remain() {
+      if (this.results.length === 0) {
+        return 0;
+      }
+      return this.results[0].hits.total - this.rows.length;
+    },
+  },
   methods: {
     search() {
-      this.result = null;
       axios({
         method: 'post',
         url: `http://10.111.129.96:9200/syllabus/${this.year}/_search`,
@@ -79,7 +89,6 @@ export default {
               fields: [
                 'title_*',
                 'teachers.name*',
-                '*.keyword',
               ],
             },
           },
@@ -87,7 +96,10 @@ export default {
         params: {
           scroll: '1m',
         },
-      }).then(resp => this.result = resp.data);
+      }).then(resp => {
+        this.results = [resp.data];
+        this.scroll();
+      });
     },
     scroll(e) {
       axios({
@@ -95,11 +107,11 @@ export default {
         url: `http://10.111.129.96:9200/_search/scroll`,
         data: {
           scroll: '1m',
-          scroll_id: this.result._scroll_id,
+          scroll_id: this.results[0]._scroll_id,
         },
       }).then(resp => {
-        this.result.hits.hits.push(...resp.data.hits.hits);
-        e.loaded();
+        this.results.push(resp.data);
+        e && e.loaded();
       });
     },
     focus() {
@@ -130,5 +142,17 @@ export default {
 <style scoped>
   form {
     margin: 20px 5%;
+  }
+
+  .result-enter-active,
+  .result-leave-active,
+  .result-move {
+    transition: opacity ease .2s, border-top ease .2s, transform ease .2s;
+  }
+
+  .result-enter,
+  .result-leave-to {
+    opacity: 0;
+    border-top: 1px solid transparent;
   }
 </style>
