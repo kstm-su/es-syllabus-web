@@ -21,7 +21,7 @@
         </md-table-row>
       </md-table-header>
       <md-table-body v-if="result">
-        <md-table-row v-for="hit in result.hits.hits">
+        <md-table-row v-for="hit in result.hits.hits" :key="hit._source.id">
           <md-table-cell>{{ hit._source.code }}</md-table-cell>
           <md-table-cell>
             <div v-if="hit._source.title_ja">{{ hit._source.title_ja }}</div>
@@ -47,13 +47,18 @@
         </md-table-row>
       </md-table-body>
     </md-table>
+    <infinite-loading v-if="result != null && result._scroll_id && result.hits.hits.length < result.hits.total" ref="loading" :distance="200" @infinite="scroll"></infinite-loading>
   </div>
 </template>
 
 <script>
-  import axios from 'axios';
+import axios from 'axios';
+import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
+  components: {
+    InfiniteLoading,
+  },
   data() {
     return {
       query: '',
@@ -63,6 +68,7 @@ export default {
   },
   methods: {
     search() {
+      this.result = null;
       axios({
         method: 'post',
         url: `http://10.111.129.96:9200/syllabus/${this.year}/_search`,
@@ -73,12 +79,29 @@ export default {
               fields: [
                 'title_*',
                 'teachers.name*',
+                '*.keyword',
               ],
             },
           },
         },
+        params: {
+          scroll: '1m',
+        },
       }).then(resp => {
         this.result = resp.data;
+      });
+    },
+    scroll(e) {
+      axios({
+        method: 'post',
+        url: `http://10.111.129.96:9200/_search/scroll`,
+        data: {
+          scroll: '1m',
+          scroll_id: this.result._scroll_id,
+        },
+      }).then(resp => {
+        this.result.hits.hits.push(...resp.data.hits.hits);
+        e.loaded();
       });
     },
     focus() {
@@ -104,6 +127,6 @@ export default {
 
 <style scoped>
   form {
-    margin: 30px 10%;
+    margin: 20px 5%;
   }
 </style>
