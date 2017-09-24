@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "uglifyjs-webpack-plugin": "^0.4.6",
     "vue-infinite-loading": "^2.2.0"
   }
 }

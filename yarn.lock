@@ -3896,6 +3896,13 @@ uglify-js@^2.8.29:
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
 
+"uglify-js@git+https://github.com/mishoo/UglifyJS2.git#harmony":
+  version "3.1.2"
+  resolved "git+https://github.com/mishoo/UglifyJS2.git#68645b28d32b426564929fb8f3903e91d31a8bc6"
+  dependencies:
+    commander "~2.11.0"
+    source-map "~0.5.1"
+
 uglify-to-browserify@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz#6e0924d6bda6b5afe349e39a6d632850a0f882b7"

@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
+    new UglifyJSPlugin(),
   ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -41,7 +43,13 @@ module.exports = {
         loader: 'babel-loader',
         test: /\.js$/,
         options: {
-          presets: ['env'],
+          presets: [
+            ['env', {
+              targets: {
+                browsers: ["last 2 versions"],
+              }
+            }],
+          ],
         },
       },
       {
