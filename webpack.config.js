@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -10,10 +11,11 @@ module.exports = {
     filename: 'bundle.js',
   },
   plugins: [
+    new MinifyPlugin(),
+    new UglifyJSPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
-    new UglifyJSPlugin(),
   ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -42,15 +44,6 @@ module.exports = {
       {
         loader: 'babel-loader',
         test: /\.js$/,
-        options: {
-          presets: [
-            ['env', {
-              targets: {
-                browsers: ["last 2 versions"],
-              }
-            }],
-          ],
-        },
       },
       {
         loader: [
@@ -62,6 +55,9 @@ module.exports = {
       {
         loader: 'url-loader',
         test: /\.(woff2?|ttf|eot|svg)(\?.*)?$/,
+        options: {
+          limit: 0x20000,
+        },
       },
     ],
   },
