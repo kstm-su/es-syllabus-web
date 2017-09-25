@@ -9,20 +9,20 @@
     <md-table>
       <md-table-header>
         <md-table-row>
-          <md-table-head>#</md-table-head>
-          <md-table-head>授業名</md-table-head>
+          <md-table-head class="only-large">#</md-table-head>
+          <md-table-head class="title-column">授業名</md-table-head>
           <md-table-head>担当教員</md-table-head>
-          <md-table-head>期間</md-table-head>
+          <md-table-head class="only-large">期間</md-table-head>
           <md-table-head>曜日・時限</md-table-head>
-          <md-table-head>部局</md-table-head>
-          <md-table-head>場所</md-table-head>
-          <md-table-head>単位数</md-table-head>
-          <md-table-head></md-table-head>
+          <md-table-head class="only-large">部局</md-table-head>
+          <md-table-head class="only-large">場所</md-table-head>
+          <md-table-head class="only-large">単位数</md-table-head>
+          <md-table-head class="only-large"></md-table-head>
         </md-table-row>
       </md-table-header>
       <transition-group name="result" tag="md-table-body">
         <md-table-row v-for="(row, i) in rows" :key="i">
-          <md-table-cell>{{ row.code }}</md-table-cell>
+          <md-table-cell class="only-large">{{ row.code }}</md-table-cell>
           <md-table-cell>
             <div v-if="row.title_ja">{{ row.title_ja }}</div>
             <div v-if="row.title_en">{{ row.title_en }}</div>
@@ -30,16 +30,16 @@
           <md-table-cell>
             <div v-for="teacher in row.teachers">{{ teacher.name }}</div>
           </md-table-cell>
-          <md-table-cell>{{ row.semester.description }}</md-table-cell>
+          <md-table-cell class="only-large">{{ row.semester.description }}</md-table-cell>
           <md-table-cell>
             <div v-for="schedule in row.schedules">{{ schedule.description }}</div>
           </md-table-cell>
-          <md-table-cell>{{ row.department.name }}</md-table-cell>
-          <md-table-cell>
+          <md-table-cell class="only-large">{{ row.department.name }}</md-table-cell>
+          <md-table-cell class="only-large">
             <div v-for="room in row.classrooms">{{ room.name }}</div>
           </md-table-cell>
-          <md-table-cell md-numeric>{{ row.credit }}</md-table-cell>
-          <md-table-cell>
+          <md-table-cell class="only-large" md-numeric>{{ row.credit }}</md-table-cell>
+          <md-table-cell class="only-large">
             <md-button class="md-icon-button" :href="`https://campus-2.shinshu-u.ac.jp/syllabus/syllabus.dll/Display${row.query}`" target="_blank">
               <md-icon>launch</md-icon>
             </md-button>
@@ -139,15 +139,39 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   form {
     margin: 20px 5%;
+  }
+
+  .md-table /deep/ {
+    table {
+      table-layout: fixed;
+      th, td {
+        width: 10%;
+        overflow: hidden;
+        transition: width ease .5s;
+        @media (max-width: 900px) {
+          &.only-large {
+            width: 0;
+          }
+
+          &:not(.only-large) {
+            width: 30%;
+          }
+
+          &.title-column {
+            width: 40%;
+          }
+        }
+      }
+    }
   }
 
   .result-enter-active,
   .result-leave-active,
   .result-move {
-    transition: opacity ease .2s, border-top ease .2s, transform ease .2s;
+    transition: opacity ease .2s, border-top ease .2s, transform ease .5s;
   }
 
   .result-enter,
