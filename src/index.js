@@ -21,6 +21,7 @@ new Vue({
     App,
   },
   router: new VueRouter({
+    mode: 'history',
     routes,
   }),
 });
