@@ -81,7 +81,7 @@ export default {
     search() {
       axios({
         method: 'post',
-        url: `http://10.111.129.96:9200/syllabus/${this.year}/_search`,
+        url: `/es/syllabus/${this.year}/_search`,
         data: {
           query: {
             multi_match: {
@@ -104,7 +104,7 @@ export default {
     scroll(e) {
       axios({
         method: 'post',
-        url: `http://10.111.129.96:9200/_search/scroll`,
+        url: `/es/_search/scroll`,
         data: {
           scroll: '1m',
           scroll_id: this.results[0]._scroll_id,
