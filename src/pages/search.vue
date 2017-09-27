@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit="search">
+    <form @submit.prevent="search">
       <md-input-container md-inline>
         <md-icon>search</md-icon>
         <md-input v-model="query" ref="input" autofocus @input="search"></md-input>
