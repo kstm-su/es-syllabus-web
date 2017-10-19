@@ -30,7 +30,9 @@
           <md-table-cell>
             <div v-for="teacher in row.teachers">{{ teacher.name }}</div>
           </md-table-cell>
-          <md-table-cell class="only-large">{{ row.semester.description }}</md-table-cell>
+          <md-table-cell class="only-large">
+            <span v-if="row.semester">{{ row.semester.description }}</span>
+          </md-table-cell>
           <md-table-cell>
             <div v-for="schedule in row.schedules">{{ schedule.description }}</div>
           </md-table-cell>
