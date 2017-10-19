@@ -86,6 +86,7 @@ export default {
           query: {
             multi_match: {
               query: this.query,
+              type: 'cross_fields',
               fields: [
                 'title_*',
                 'teachers.name*',
