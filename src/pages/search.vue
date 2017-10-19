@@ -49,6 +49,12 @@
         </md-table-row>
       </transition-group>
     </md-table>
+    <md-dialog ref="errorDialog">
+      <md-dialog-content>{{ errorDialog.body }}</md-dialog-content>
+      <md-dialog-actions v-for="action in errorDialog.actions">
+        <md-button class="md-primary" @click="action.onclick">{{ action.label }}</md-button>
+      </md-dialog-actions>
+    </md-dialog>
     <infinite-loading v-if="remain > 0" ref="loading" :distance="200" @infinite="scroll"></infinite-loading>
   </div>
 </template>
@@ -66,6 +72,7 @@ export default {
       query: '',
       results: [],
       year: new Date().getFullYear(),
+      errorDialog: {},
     };
   },
   computed: {
@@ -102,6 +109,8 @@ export default {
       }).then(resp => {
         this.results = [resp.data];
         this.scroll();
+      }).catch(err => {
+        console.error(err);
       });
     },
     scroll(e) {
@@ -115,7 +124,29 @@ export default {
       }).then(resp => {
         this.results.push(resp.data);
         e && e.loaded();
+      }).catch(err => {
+        console.error(err);
+        this.openErrorDialog('接続がタイムアウトしました', [
+          {
+            label: 'Reload',
+            onclick: () => {
+              this.results = [];
+              this.search();
+              this.closeErrorDialog();
+            },
+          },
+        ]);
       });
+    },
+    openErrorDialog(body, actions) {
+      this.errorDialog = {
+        body,
+        actions,
+      };
+      this.$refs.errorDialog.open();
+    },
+    closeErrorDialog(title, body, actions) {
+      this.$refs.errorDialog.close();
     },
     focus() {
       this.$refs.input.$el.focus();
