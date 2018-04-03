@@ -96,9 +96,14 @@ export default {
             multi_match: {
               query: this.query,
               type: 'cross_fields',
+              operator: 'and',
               fields: [
+                'code',
                 'title_*',
                 'teachers.name*',
+                'schedules.description',
+                'department.name',
+                'text.*',
               ],
             },
           },
