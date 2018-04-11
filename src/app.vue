@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <main-sidebar ref="mainSidebar"></main-sidebar>
+    <!--<main-sidebar ref="mainSidebar"></main-sidebar>-->
     <main-content></main-content>
   </div>
 </template>
@@ -49,9 +49,9 @@
     flex-flow: column nowrap;
     transition: $swift-ease-out;
 
-    @media (min-width: 1281px) {
+    /*@media (min-width: 1281px) {
       padding-left: $sizebar-size;
-    }
+    }*/
   }
 
   .main-content /deep/ .main-header {
