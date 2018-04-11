@@ -17,7 +17,7 @@
           <md-table-head class="only-large">部局</md-table-head>
           <md-table-head class="only-large">場所</md-table-head>
           <md-table-head class="only-large">単位数</md-table-head>
-          <md-table-head class="only-large"></md-table-head>
+          <md-table-head></md-table-head>
         </md-table-row>
       </md-table-header>
       <transition-group name="result" tag="md-table-body">
