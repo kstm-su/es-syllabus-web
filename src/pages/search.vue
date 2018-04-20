@@ -93,10 +93,25 @@ export default {
         url: `/es/syllabus/${this.year}/_search`,
         data: {
           query: {
+            bool:{should:[{
             multi_match: {
               query: this.query,
               type: 'cross_fields',
-              operator: 'and',
+              analyzer: 'whitespace',
+              fields: [
+                'code',
+                'title_*',
+                'teachers.name*',
+                'schedules.description',
+                'semester.description',
+                'department.name',
+              ],
+              boost: 10
+            },
+            },{
+            multi_match: {
+              query: this.query,
+              type: 'cross_fields',
               fields: [
                 'code',
                 'title_*',
@@ -106,6 +121,7 @@ export default {
                 'text.*',
               ],
             },
+            }]}
           },
         },
         params: {
