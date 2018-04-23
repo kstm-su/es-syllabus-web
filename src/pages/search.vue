@@ -90,7 +90,7 @@ export default {
     search() {
       axios({
         method: 'post',
-        url: `/es/syllabus/${this.year}/_search`,
+        url: `//syllabus.kstm.cloud/es/syllabus/${this.year}/_search`,
         data: {
           query: {
             bool:{should:[{
@@ -137,7 +137,7 @@ export default {
     scroll(e) {
       axios({
         method: 'post',
-        url: `/es/_search/scroll`,
+        url: `//syllabus.kstm.cloud/es/_search/scroll`,
         data: {
           scroll: '1m',
           scroll_id: this.results[0]._scroll_id,
