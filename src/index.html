@@ -18,12 +18,21 @@
         .md-table .md-table-cell .md-table-cell-container {
           /*background-color: #f00;*/
           padding: 6px 6px 6px 6px !important;
+          height: 48px;
         }
         /* 長い授業名は省略する */
         .md-table-cell-container > div {
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
+          display: none;
+        }
+        /* 表示は2行まで */
+        .md-table-cell-container :first-child {
+          display: block;
+        }
+        .md-table-cell-container :nth-child(2) {
+          display: block;
         }
       }
     </style>
