@@ -212,7 +212,7 @@ export default {
           }
 
           &:not(.only-large) {
-            width: 30%;
+            width: 15%;
           }
 
           &.title-column {
