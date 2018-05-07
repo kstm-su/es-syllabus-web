@@ -9,6 +9,33 @@
       gtag('js', new Date());
       gtag('config', 'UA-57390908-2');
     </script>
+    <style>
+      @media (max-width: 900px) {
+        /* 広すぎる余白を狭く */
+        .md-table .md-table-head-text {
+          padding: 6px 6px 6px 6px !important;
+        }
+        .md-table .md-table-cell .md-table-cell-container {
+          /*background-color: #f00;*/
+          padding: 6px 6px 6px 6px !important;
+          height: 48px;
+        }
+        /* 長い授業名は省略する */
+        .md-table-cell-container > div {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          display: none;
+        }
+        /* 表示は2行まで */
+        .md-table-cell-container :first-child {
+          display: block;
+        }
+        .md-table-cell-container :nth-child(2) {
+          display: block;
+        }
+      }
+    </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>シラバス検索</title>
