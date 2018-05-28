@@ -210,13 +210,11 @@ export default {
           &.only-large {
             width: 0;
           }
-
           &:not(.only-large) {
-            width: 15%;
+            width: 18%;
           }
-
           &.title-column {
-            width: 40%;
+            width: initial;
           }
         }
       }
